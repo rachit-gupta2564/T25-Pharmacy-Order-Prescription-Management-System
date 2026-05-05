@@ -1,0 +1,2 @@
+// Patient components index
+export {};

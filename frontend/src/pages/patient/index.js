@@ -1,0 +1,2 @@
+// Patient pages index
+export {};
