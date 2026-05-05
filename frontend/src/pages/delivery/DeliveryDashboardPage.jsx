@@ -32,12 +32,22 @@ export function DeliveryDashboardPage() {
   const loadDashboardData = async () => {
     try {
       setLoading(true)
-      // TODO: Replace with actual API call
-      // const data = await deliveryService.getAssignedOrders()
-      // setAssignments(data)
+      setError(null)
+      
+      // Fetch assigned orders from API
+      const data = await deliveryService.getAssignedOrders()
+      
+      // Transform API data to match component structure
+      if (data && Array.isArray(data)) {
+        setAssignments(data)
+      } else {
+        setAssignments([])
+      }
+      
       setLoading(false)
     } catch (err) {
-      setError(err.message)
+      console.error('Error loading dashboard data:', err)
+      setError(err.message || 'Failed to load delivery assignments')
       setLoading(false)
     }
   }

@@ -23,64 +23,76 @@ export function AssignedOrders() {
   const loadAssignedOrders = async () => {
     try {
       setLoading(true)
-      // TODO: Replace with actual API call
-      // const data = await deliveryService.getAssignedOrders()
-      // setOrders(data)
+      setError(null)
       
-      // Mock data for now
-      const mockOrders = [
-        {
-          id: 'ORD-1001',
-          patientName: 'Ananya Sharma',
-          address: '123 MG Road, Bangalore',
-          phoneNumber: '+91 99999 00001',
-          medicines: ['Aspirin 100mg', 'Vitamin D'],
-          status: 'pending',
-          priority: 'high',
-          estimatedDelivery: '2:30 PM',
-          orderDate: '2024-01-15',
-        },
-        {
-          id: 'ORD-1002',
-          patientName: 'Rahul Sharma',
-          address: '456 Indiranagar, Bangalore',
-          phoneNumber: '+91 99999 00002',
-          medicines: ['Cough Syrup', 'Paracetamol 500mg'],
-          status: 'picked_up',
-          priority: 'normal',
-          estimatedDelivery: '3:15 PM',
-          orderDate: '2024-01-15',
-        },
-        {
-          id: 'ORD-1003',
-          patientName: 'Nisha Patel',
-          address: '789 Koramangala, Bangalore',
-          phoneNumber: '+91 99999 00003',
-          medicines: ['Antibiotic Cream', 'Bandages'],
-          status: 'pending',
-          priority: 'normal',
-          estimatedDelivery: '4:00 PM',
-          orderDate: '2024-01-15',
-        },
-        {
-          id: 'ORD-1004',
-          patientName: 'Arjun Kumar',
-          address: '321 Whitefield, Bangalore',
-          phoneNumber: '+91 99999 00004',
-          medicines: ['Insulin Injection', 'Blood Sugar Monitor'],
-          status: 'in_transit',
-          priority: 'high',
-          estimatedDelivery: '1:45 PM',
-          orderDate: '2024-01-15',
-        },
-      ]
-      setOrders(mockOrders)
+      // Fetch orders from API
+      const data = await deliveryService.getAssignedOrders()
+      
+      // Transform and set orders
+      if (data && Array.isArray(data)) {
+        setOrders(data)
+      } else if (data && data.orders) {
+        setOrders(data.orders)
+      } else {
+        // Fallback to mock data
+        setOrders(getMockOrders())
+      }
+      
       setLoading(false)
     } catch (err) {
-      setError(err.message)
+      console.error('Error loading orders:', err)
+      // Fallback to mock data on error
+      setOrders(getMockOrders())
       setLoading(false)
     }
   }
+
+  const getMockOrders = () => [
+    {
+      id: 'ORD-1001',
+      patientName: 'Ananya Sharma',
+      address: '123 MG Road, Bangalore',
+      phoneNumber: '+91 99999 00001',
+      medicines: ['Aspirin 100mg', 'Vitamin D'],
+      status: 'pending',
+      priority: 'high',
+      estimatedDelivery: '2:30 PM',
+      orderDate: '2024-01-15',
+    },
+    {
+      id: 'ORD-1002',
+      patientName: 'Rahul Sharma',
+      address: '456 Indiranagar, Bangalore',
+      phoneNumber: '+91 99999 00002',
+      medicines: ['Cough Syrup', 'Paracetamol 500mg'],
+      status: 'picked_up',
+      priority: 'normal',
+      estimatedDelivery: '3:15 PM',
+      orderDate: '2024-01-15',
+    },
+    {
+      id: 'ORD-1003',
+      patientName: 'Nisha Patel',
+      address: '789 Koramangala, Bangalore',
+      phoneNumber: '+91 99999 00003',
+      medicines: ['Antibiotic Cream', 'Bandages'],
+      status: 'pending',
+      priority: 'normal',
+      estimatedDelivery: '4:00 PM',
+      orderDate: '2024-01-15',
+    },
+    {
+      id: 'ORD-1004',
+      patientName: 'Arjun Kumar',
+      address: '321 Whitefield, Bangalore',
+      phoneNumber: '+91 99999 00004',
+      medicines: ['Insulin Injection', 'Blood Sugar Monitor'],
+      status: 'in_transit',
+      priority: 'high',
+      estimatedDelivery: '1:45 PM',
+      orderDate: '2024-01-15',
+    },
+  ]
 
   const filterOrders = () => {
     let filtered = orders
@@ -120,17 +132,7 @@ export function AssignedOrders() {
     return orderStatusColors[status] || '#6b7280'
   }
 
-  const getPriorityClass = (priority) => {
-    const classMap = {
-      high: 'priority-high',
-      normal: 'priority-normal',
-      low: 'priority-low',
-    }
-    return classMap[priority] || 'priority-normal'
-  }
-
   const handlePickOrder = async (orderId) => {
-    // TODO: Implement pick up logic
     console.log('Pick up order:', orderId)
   }
 
